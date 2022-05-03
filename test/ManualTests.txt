@@ -1,0 +1,10 @@
+To be tested:
+
+1. depositing any token to LoanManager, AaveManager, CurveManager - then withdrawing - should be possible for only owner via LoanManager
+2. trying to withraw funds as worker, nonowner for all LoanManager, AaveManager, CurveManager
+3. trying to assing owner as worker, nonowner
+4. trying to assign worker as worker or nonowner
+5. borrowAndStake - dai, usdc, usdt
+6. unstakeAndRepay - dai, usdc, usdt
+7. trying to call functions assigned onlyForContract
+8. transfer ownership, test main functions

@@ -1,0 +1,16 @@
+{
+  "name": "loan-manger",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@openzeppelin/contracts": "^4.3.2",
+    "@truffle/hdwallet-provider": "^1.5.1",
+    "dotenv": "^16.0.0",
+    "ethereum-waffle": "^3.4.0",
+    "git-init": "^1.0.0",
+    "truffle-hdwallet-provider": "^1.0.17"
+  },
+  "devDependencies": {
+    "chai": "^4.3.4"
+  }
+}
