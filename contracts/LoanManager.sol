@@ -10,7 +10,6 @@ import "./CurveManager.sol";
 import "./AaveManager.sol";
 
 contract LoanManager is OwnableByWorker, Withdrawble {
-
     CurveManager private curveManager;
     AaveManager private aaveManager;
 
@@ -25,7 +24,6 @@ contract LoanManager is OwnableByWorker, Withdrawble {
         address _usdc,
         address _usdt
     ) {
-
         aaveManager = new AaveManager(_lendingPoolAddressesProvider);
 
         curveManager = new CurveManager(
@@ -36,7 +34,6 @@ contract LoanManager is OwnableByWorker, Withdrawble {
             _usdc,
             _usdt
         );
-
 
         emit CreationAddtionalContracts("aaveManager", address(aaveManager));
         emit CreationAddtionalContracts("curveManager", address(curveManager));
@@ -59,14 +56,11 @@ contract LoanManager is OwnableByWorker, Withdrawble {
         aaveManager.repay(token, withdrawAmount, owner());
     }
 
-    function withdrawFromAave(IERC20 token, uint256 amount) external onlyOwner {
+    function withdrawFromAave(IERC20 token) external onlyOwner {
         aaveManager.withdraw(token);
     }
 
-    function withdrawFromCurve(IERC20 token, uint256 amount)
-        external
-        onlyOwner
-    {
+    function withdrawFromCurve(IERC20 token) external onlyOwner {
         curveManager.withdraw(token);
     }
 }
