@@ -15,10 +15,22 @@ describe('LoanManager', async function () {
     let token;
     let loanManager;
 
+    const lendingPoolAddressProvider = "0x0000000000000000000000000000000000000000";
+    const crvPool = "0x0000000000000000000000000000000000000001";
+    const am3CrvDeposit = "0x0000000000000000000000000000000000000002";
+    const am3CRV = "0x0000000000000000000000000000000000000003";
+    const dai = "0x0000000000000000000000000000000000000004";
+    const usdc = "0x0000000000000000000000000000000000000005";
+    const usdt = "0x0000000000000000000000000000000000000006"
+
     beforeEach(async function () {
         this.timeout(5000);
-        loanManager = await deployContract(owner, LoanManager);
         token = await deployMockContract(owner, IERC20.abi);
+        loanManager = await deployContract(
+            owner,
+            LoanManager,
+            [lendingPoolAddressProvider, crvPool, am3CrvDeposit, am3CRV, dai, usdc, usdt]
+        );
     });
 
     it('should return owner', async () => {
@@ -39,12 +51,12 @@ describe('LoanManager', async function () {
 
     it('Old owner should not be able to withdraw', async () => {
         await loanManager.transferOwnership(notOwner.address);
-        await expect(loanManager.withdraw(token.address, amount)).to.be.revertedWith('Ownable: caller is not the owner');
+        await expect(loanManager.withdraw(token.address)).to.be.revertedWith('Ownable: caller is not the owner');
     });
 
     it('Owner should be able to withdraw', async function () {
         await token.mock.transfer.returns(true);
-        await loanManager.withdraw(token.address, amount);
+        await loanManager.withdraw(token.address);
         await expect('transfer').to.be.calledOnContract(token);
     });
 
@@ -60,13 +72,13 @@ describe('LoanManager', async function () {
 
     it('Owner should able to call withdrawFromAave function', async function () {
         await token.mock.transfer.returns(true);
-        await loanManager.withdrawFromAave(token.address, amount);
+        await loanManager.withdrawFromAave(token.address);
         await expect('transfer').to.be.calledOnContract(token);
     });
 
     it('Owner should able to call withdrawFromCurve function', async function () {
         await token.mock.transfer.returns(true);
-        await loanManager.withdrawFromCurve(token.address, amount);
+        await loanManager.withdrawFromCurve(token.address);
         await expect('transfer').to.be.calledOnContract(token);
     });
 
@@ -74,13 +86,13 @@ describe('LoanManager', async function () {
         // we assume that worker is deployer, then he reassingn role to the owner
         let newOwner = notOwner.address;
         await loanManager.transferOwnership(newOwner);
-        await expect(loanManager.withdrawFromAave(token.address, amount)).to.be.revertedWith("Ownable: caller is not the owner");
+        await expect(loanManager.withdrawFromAave(token.address)).to.be.revertedWith("Ownable: caller is not the owner");
     });
 
     it('Worker should not able to call withdrawFromCurve function', async function () {
         // we assume that worker is deployer, then he reassingn role to the owner
         let newOwner = notOwner.address;
         await loanManager.transferOwnership(newOwner);
-        await expect(loanManager.withdrawFromCurve(token.address, amount)).to.be.revertedWith("Ownable: caller is not the owner");
+        await expect(loanManager.withdrawFromCurve(token.address)).to.be.revertedWith("Ownable: caller is not the owner");
     });
 });

@@ -11,6 +11,11 @@
     "truffle-hdwallet-provider": "^1.0.17"
   },
   "devDependencies": {
-    "chai": "^4.3.4"
+    "chai": "^4.3.6",
+    "mocha": "^10.0.0"
+  },
+  "scripts": {
+    "build": "waffle",
+    "test": "set NODE_ENV=test && mocha"
   }
 }

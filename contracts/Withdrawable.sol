@@ -9,6 +9,6 @@ abstract contract Withdrawble is Ownable {
     // for safety reason, if founds somehow stuck
     function withdraw(IERC20 token) external onlyOwner {
         uint balance = token.balanceOf(address(this));
-        token.transfer(msg.sender, balance); // tx.origin?? to test!!!
+        token.transfer(msg.sender, balance);
     }
 }

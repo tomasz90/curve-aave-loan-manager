@@ -9,7 +9,7 @@ module.exports = {
             host: "127.0.0.1", // Localhost (default: none)
             port: 7548, // Standard Ethereum port (default: none)
             network_id: 10001, // Any network (default: none)
-            gas: 6000000,
+            gas: 600000000,
         },
         matic: {
             provider: () => new HDWalletProvider(process.env.MNEMONIC, 
