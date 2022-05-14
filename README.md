@@ -1,4 +1,4 @@
-# curve-aave-loan-manager
+# Curve <=> Aave Loan Manager
 
 This project shows how to manage balances between Curve finance and Aave protocol. Usually yields on Curve were higher then on Aave (counting additional incentives) so it was profitable to put your crypto on Aave, then borrow stablecoins against it and transfer them to Curve 3pool.
 
