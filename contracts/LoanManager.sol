@@ -14,6 +14,9 @@ contract LoanManager is OwnableByWorker, Withdrawble {
     AaveManager private aaveManager;
 
     event CreationAddtionalContracts(string name, address _address);
+    event BorrowAndStake(address token, uint256 amount);
+    event UnstakeAndRepay(address token, uint256 amount);
+    event Withdraw(address token);
 
     constructor(
         address _lendingPoolAddressesProvider,
@@ -43,6 +46,7 @@ contract LoanManager is OwnableByWorker, Withdrawble {
         // delegation alowance should be done not here but on aaveManager address
         aaveManager.borrow(token, amount, address(curveManager), owner());
         curveManager.depositAndStake(token, amount, owner());
+        emit BorrowAndStake(address(token), amount);
     }
 
     function unstakeAndRepay(IERC20 token, uint256 amount) external onlyWorker {
@@ -54,13 +58,16 @@ contract LoanManager is OwnableByWorker, Withdrawble {
             owner()
         );
         aaveManager.repay(token, withdrawAmount, owner());
+        emit UnstakeAndRepay(address(token), amount);
     }
 
     function withdrawFromAave(IERC20 token) external onlyOwner {
         aaveManager.withdraw(token);
+        emit Withdraw(address(token));
     }
 
     function withdrawFromCurve(IERC20 token) external onlyOwner {
         curveManager.withdraw(token);
+        emit Withdraw(address(token));
     }
 }
