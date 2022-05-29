@@ -4,10 +4,9 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "./OwnableByContract.sol";
 import "./Withdrawable.sol";
 
-contract CurveManager is OwnableByContract, Withdrawble {
+contract CurveManager is Ownable, Withdrawble {
     address private crvPoolAddress;
     address private am3CrvDeposit;
 
@@ -50,7 +49,7 @@ contract CurveManager is OwnableByContract, Withdrawble {
         IERC20 token,
         uint256 amount,
         address mainAccount
-    ) external onlyContract {
+    ) external onlyOwner {
         uint256[3] memory amounts = [uint256(0), uint256(0), uint256(0)];
         uint128 index = getTokenIndex(token);
         amounts[index] = amount;
@@ -84,7 +83,7 @@ contract CurveManager is OwnableByContract, Withdrawble {
         uint256 amount,
         address aaveManager,
         address mainAccount
-    ) external onlyContract returns (uint256) {
+    ) external onlyOwner returns (uint256) {
         uint256 virtualPrice = pool.get_virtual_price();
         amount = (amount * (1 ether)) / virtualPrice;
 

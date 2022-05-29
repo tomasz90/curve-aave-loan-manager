@@ -4,10 +4,9 @@ pragma solidity ^0.8.6;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-import "./OwnableByContract.sol";
 import "./Withdrawable.sol";
 
-contract AaveManager is OwnableByContract, Withdrawble {
+contract AaveManager is Ownable, Withdrawble {
     LendingPoolAddressesProvider private addressProvider;
 
     constructor(address _lendingPoolAddressesProvider) {
@@ -20,7 +19,7 @@ contract AaveManager is OwnableByContract, Withdrawble {
         IERC20 token,
         uint256 amount,
         address mainAccount
-    ) external onlyContract {
+    ) external onlyOwner {
         bool succ = token.approve(address(getPool()), amount);
         require(succ, "Approve failed");
 
@@ -32,7 +31,7 @@ contract AaveManager is OwnableByContract, Withdrawble {
         uint256 amount,
         address curveManager,
         address mainAccount
-    ) external onlyContract {
+    ) external onlyOwner {
         getPool().borrow(address(token), amount, 2, 0, mainAccount);
 
         bool succ = token.transfer(curveManager, amount);
