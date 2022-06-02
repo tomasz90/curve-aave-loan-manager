@@ -2,8 +2,8 @@
 pragma solidity ^0.8.6;
 
 import "@openzeppelin/contracts/access/Ownable.sol";
-abstract contract OwnableByWorker is Ownable {
 
+abstract contract OwnableByWorker is Ownable {
     address private _worker;
 
     event WorkOwnershipTransferred(address indexed previousOwner, address indexed newOwner);
@@ -12,14 +12,14 @@ abstract contract OwnableByWorker is Ownable {
         setWorker(tx.origin);
         transferOwnership(tx.origin);
     }
-    
+
     modifier onlyWorker() {
         // worker is deployer
         require(worker() == tx.origin, "OwnableByWorker: caller is not the owner");
         _;
     }
 
-    function worker() public view returns(address) {
+    function worker() public view returns (address) {
         return _worker;
     }
 
@@ -27,5 +27,5 @@ abstract contract OwnableByWorker is Ownable {
         address oldWorker = _worker;
         _worker = newWorker;
         emit WorkOwnershipTransferred(oldWorker, newWorker);
-   }
+    }
 }

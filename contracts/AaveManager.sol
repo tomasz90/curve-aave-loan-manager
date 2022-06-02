@@ -10,9 +10,7 @@ contract AaveManager is Ownable, Withdrawble {
     LendingPoolAddressesProvider private addressProvider;
 
     constructor(address _lendingPoolAddressesProvider) {
-        addressProvider = LendingPoolAddressesProvider(
-            _lendingPoolAddressesProvider
-        );
+        addressProvider = LendingPoolAddressesProvider(_lendingPoolAddressesProvider);
     }
 
     function repay(

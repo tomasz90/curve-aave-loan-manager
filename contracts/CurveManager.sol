@@ -28,7 +28,6 @@ contract CurveManager is Ownable, Withdrawble {
         address _usdc,
         address _usdt
     ) {
-        
         pool = CurvePool(_crvPool);
         depositPool = Am3CurveDeposit(_am3CrvDeposit);
 
@@ -60,11 +59,7 @@ contract CurveManager is Ownable, Withdrawble {
         bool succ = token.approve(crvPoolAddress, amount);
         require(succ, "Approve failed");
 
-        uint256 am3CRVbalance = pool.add_liquidity(
-            amounts,
-            minMintAmount,
-            useUnderlying
-        ); // revert
+        uint256 am3CRVbalance = pool.add_liquidity(amounts, minMintAmount, useUnderlying); // revert
         emit AddLiquidity(crvPoolAddress, amounts);
 
         succ = am3CRV.approve(am3CrvDeposit, am3CRVbalance);
@@ -87,11 +82,7 @@ contract CurveManager is Ownable, Withdrawble {
         uint256 virtualPrice = pool.get_virtual_price();
         amount = (amount * (1 ether)) / virtualPrice;
 
-        bool succ = depositToken.transferFrom(
-            mainAccount,
-            address(this),
-            amount
-        );
+        bool succ = depositToken.transferFrom(mainAccount, address(this), amount);
         require(succ, "Transfer from failed");
 
         depositPool.withdraw(amount);
@@ -99,12 +90,7 @@ contract CurveManager is Ownable, Withdrawble {
 
         int128 index = int128(getTokenIndex(token));
 
-        uint256 withdrawAmount = pool.remove_liquidity_one_coin(
-            amount,
-            index,
-            1,
-            true
-        );
+        uint256 withdrawAmount = pool.remove_liquidity_one_coin(amount, index, 1, true);
         emit RemoveLiquidity(crvPoolAddress, amount);
 
         succ = token.transfer(aaveManager, withdrawAmount);

@@ -29,14 +29,7 @@ contract LoanManager is OwnableByWorker, Withdrawble {
     ) {
         aaveManager = new AaveManager(_lendingPoolAddressesProvider);
 
-        curveManager = new CurveManager(
-            _crvPool,
-            _am3CrvDeposit,
-            _am3CRV,
-            _dai,
-            _usdc,
-            _usdt
-        );
+        curveManager = new CurveManager(_crvPool, _am3CrvDeposit, _am3CRV, _dai, _usdc, _usdt);
 
         emit CreationAddtionalContracts("aaveManager", address(aaveManager));
         emit CreationAddtionalContracts("curveManager", address(curveManager));
@@ -51,12 +44,7 @@ contract LoanManager is OwnableByWorker, Withdrawble {
 
     function unstakeAndRepay(IERC20 token, uint256 amount) external onlyWorker {
         // alowance should be done not here but on curveManager address
-        uint256 withdrawAmount = curveManager.unstakeAndWithdraw(
-            token,
-            amount,
-            address(aaveManager),
-            owner()
-        );
+        uint256 withdrawAmount = curveManager.unstakeAndWithdraw(token, amount, address(aaveManager), owner());
         aaveManager.repay(token, withdrawAmount, owner());
         emit UnstakeAndRepay(address(token), amount);
     }
